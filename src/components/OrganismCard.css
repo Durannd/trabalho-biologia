@@ -1,0 +1,226 @@
+.organism-card {
+  background: var(--gradient-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.organism-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--nivel-color);
+  opacity: 0.6;
+}
+
+.organism-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.organism-card.ameaçado {
+  border-color: rgba(249, 115, 22, 0.3);
+  animation: pulse-gold 2s infinite;
+}
+
+.organism-card.extinto {
+  border-color: rgba(239, 68, 68, 0.3);
+  opacity: 0.7;
+  filter: grayscale(40%);
+}
+
+.organism-card.burn {
+  background: var(--burn-card);
+  border-color: var(--burn-border);
+}
+
+/* === Compact variant === */
+.organism-card.compact {
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  border-left: 3px solid var(--nivel-color);
+}
+
+.organism-card.compact::before {
+  display: none;
+}
+
+.organism-card.compact:hover {
+  border-color: var(--nivel-color);
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.organism-emoji-compact {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.organism-name-compact {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* === Header === */
+.organism-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.organism-emoji-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.organism-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+  display: block;
+}
+
+.status-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-orange);
+}
+
+.status-overlay-dead {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
+
+.organism-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.organism-name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.organism-nivel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.status-text {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  .status-text {
+    display: inline;
+  }
+}
+
+/* === Energy Section === */
+.organism-energy {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.energy-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.energy-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.energy-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.energy-value {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.energy-value.received {
+  color: var(--accent-green);
+}
+
+.energy-value.lost {
+  color: var(--accent-red);
+}
+
+.energy-value.percent {
+  color: var(--accent-gold);
+}
+
+/* === Description === */
+.organism-descricao {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* === Curiosidade === */
+.organism-curiosidade {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(245, 158, 11, 0.08);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--accent-gold);
+}
+
+.curiosidade-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+.organism-curiosidade span:last-child {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}

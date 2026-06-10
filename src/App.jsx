@@ -1,0 +1,288 @@
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { organismos, getProdutores } from "./data/organismos";
+import {
+  calcularEnergiaCadeia,
+  buscarPredadoresPossiveis,
+  verificarColapsoCadeia,
+  ENERGIA_SOLAR,
+} from "./utils/simulacao";
+
+import IntroScreen from "./components/IntroScreen";
+import OrganismSelector from "./components/OrganismSelector";
+import FoodChainDisplay from "./components/FoodChainDisplay";
+import EnergyPanel from "./components/EnergyPanel";
+import ControlPanel from "./components/ControlPanel";
+import BurnOverlay from "./components/BurnOverlay";
+import CollapseAlert from "./components/CollapseAlert";
+import EducationalTip from "./components/EducationalTip";
+import OrganismDetailModal from "./components/OrganismDetailModal";
+
+import "./App.css";
+
+export default function App() {
+  // Estado principal
+  const [fase, setFase] = useState("intro"); // "intro" | "montagem" | "resultado"
+  const [cadeia, setCadeia] = useState([]); // organismos selecionados (raw)
+  const [criseAtiva, setCriseAtiva] = useState(false);
+  const [showCollapseAlert, setShowCollapseAlert] = useState(false);
+  const [collapseInfo, setCollapseInfo] = useState(null);
+  const [selectedOrganism, setSelectedOrganism] = useState(null);
+  const [tipTrigger, setTipTrigger] = useState(0);
+  const [tipContexto, setTipContexto] = useState(null);
+
+  // Cadeia com energia calculada
+  const cadeiaComEnergia = useMemo(() => {
+    if (cadeia.length === 0) return [];
+    return calcularEnergiaCadeia(cadeia, ENERGIA_SOLAR, criseAtiva);
+  }, [cadeia, criseAtiva]);
+
+  // Próximos organismos possíveis
+  const proximosOrganismos = useMemo(() => {
+    if (cadeia.length === 0) return getProdutores();
+    const ultimo = cadeia[cadeia.length - 1];
+    return buscarPredadoresPossiveis(ultimo, organismos);
+  }, [cadeia]);
+
+  // Verificar colapso quando energia muda
+  useEffect(() => {
+    if (cadeiaComEnergia.length >= 2) {
+      const resultado = verificarColapsoCadeia(cadeiaComEnergia);
+      setCollapseInfo(resultado);
+      if (resultado.colapso && criseAtiva) {
+        setShowCollapseAlert(true);
+      }
+    }
+  }, [cadeiaComEnergia, criseAtiva]);
+
+  // Toggle burn mode no body
+  useEffect(() => {
+    if (criseAtiva) {
+      document.body.classList.add("burn-mode");
+    } else {
+      document.body.classList.remove("burn-mode");
+    }
+    return () => document.body.classList.remove("burn-mode");
+  }, [criseAtiva]);
+
+  // === Handlers ===
+
+  const handleStart = useCallback(() => {
+    setFase("montagem");
+  }, []);
+
+  const handleSelectOrganismo = useCallback((org) => {
+    setCadeia((prev) => [...prev, org]);
+
+    // Dica educativa
+    if (org.tipo === "produtor") {
+      setTipContexto("produtor");
+    } else if (org.tipo === "predador_topo") {
+      setTipContexto("predador_topo");
+    } else {
+      setTipContexto("consumidor");
+    }
+    setTipTrigger((t) => t + 1);
+  }, []);
+
+  const handleRemoverUltimo = useCallback(() => {
+    setCadeia((prev) => prev.slice(0, -1));
+    setShowCollapseAlert(false);
+    setCollapseInfo(null);
+  }, []);
+
+  const handleRecomecar = useCallback(() => {
+    setCadeia([]);
+    setCriseAtiva(false);
+    setShowCollapseAlert(false);
+    setCollapseInfo(null);
+    setFase("montagem");
+    setTipContexto(null);
+  }, []);
+
+  const handleFinalizar = useCallback(() => {
+    setFase("resultado");
+    // Verificar colapso
+    const resultado = verificarColapsoCadeia(
+      calcularEnergiaCadeia(cadeia, ENERGIA_SOLAR, criseAtiva)
+    );
+    if (resultado.colapso) {
+      setCollapseInfo(resultado);
+      setShowCollapseAlert(true);
+    }
+  }, [cadeia, criseAtiva]);
+
+  const handleAtivarQueimada = useCallback(() => {
+    setCriseAtiva(true);
+    setTipContexto("queimada");
+    setTipTrigger((t) => t + 1);
+  }, []);
+
+  const handleRestaurarAmbiente = useCallback(() => {
+    setCriseAtiva(false);
+    setShowCollapseAlert(false);
+  }, []);
+
+  const handleOrganismoClick = useCallback((org) => {
+    setSelectedOrganism(org);
+  }, []);
+
+  // === Determinar título e subtítulo do selector ===
+  const getSelectorInfo = () => {
+    if (cadeia.length === 0) {
+      return {
+        titulo: "🌱 Escolha um Produtor",
+        subtitulo:
+          "Toda cadeia alimentar começa com um organismo que realiza fotossíntese.",
+      };
+    }
+    const ultimo = cadeia[cadeia.length - 1];
+    return {
+      titulo: `🐾 Quem se alimenta de ${ultimo.nome}?`,
+      subtitulo: `Escolha o próximo organismo da cadeia alimentar.`,
+    };
+  };
+
+  // === Render ===
+
+  if (fase === "intro") {
+    return (
+      <AnimatePresence mode="wait">
+        <IntroScreen onStart={handleStart} />
+      </AnimatePresence>
+    );
+  }
+
+  const selectorInfo = getSelectorInfo();
+
+  return (
+    <div className={`app ${criseAtiva ? "burn-active" : ""}`}>
+      <BurnOverlay active={criseAtiva} />
+
+      {/* Header */}
+      <motion.header
+        className="app-header"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div className="header-left">
+          <h1 className="header-title">🌿 Simulador Amazônia</h1>
+          <span className="header-subtitle">
+            Fluxo de Energia & Entropia
+          </span>
+        </div>
+        <div className="header-right">
+          {criseAtiva && (
+            <motion.span
+              className="header-crisis-badge"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring" }}
+            >
+              🔥 Queimada Ativa
+            </motion.span>
+          )}
+          {collapseInfo?.colapso && (
+            <motion.span
+              className="header-collapse-badge"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring" }}
+            >
+              ⚠️ Colapso
+            </motion.span>
+          )}
+        </div>
+      </motion.header>
+
+      {/* Main layout */}
+      <div className="app-layout">
+        {/* Coluna principal */}
+        <main className="main-column">
+          {/* Educational tip */}
+          <EducationalTip contexto={tipContexto} trigger={tipTrigger} />
+
+          {/* Cadeia construída */}
+          <FoodChainDisplay
+            cadeia={cadeiaComEnergia}
+            criseAtiva={criseAtiva}
+            onOrganismoClick={handleOrganismoClick}
+          />
+
+          {/* Seletor de organismos */}
+          {fase === "montagem" && (
+            <OrganismSelector
+              organismos={proximosOrganismos}
+              onSelect={handleSelectOrganismo}
+              titulo={selectorInfo.titulo}
+              subtitulo={selectorInfo.subtitulo}
+              criseAtiva={criseAtiva}
+            />
+          )}
+
+          {/* Status do ecossistema no resultado */}
+          {fase === "resultado" && cadeiaComEnergia.length > 0 && (
+            <motion.div
+              className={`ecosystem-status ${collapseInfo?.colapso ? "danger" : "stable"}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <span className="status-icon">
+                {collapseInfo?.colapso ? "⚠️" : "✅"}
+              </span>
+              <div>
+                <h3>
+                  {collapseInfo?.colapso
+                    ? "Ecossistema em Desequilíbrio"
+                    : "Ecossistema Estável"}
+                </h3>
+                <p>
+                  {collapseInfo?.colapso
+                    ? collapseInfo.mensagem
+                    : "A energia disponível ainda é suficiente para manter os organismos escolhidos."}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </main>
+
+        {/* Sidebar */}
+        <aside className="sidebar">
+          {/* Painel de energia */}
+          {cadeiaComEnergia.length > 0 && (
+            <EnergyPanel cadeia={cadeiaComEnergia} criseAtiva={criseAtiva} />
+          )}
+
+          {/* Controles */}
+          <ControlPanel
+            cadeia={cadeia}
+            criseAtiva={criseAtiva}
+            temProximosOrganismos={proximosOrganismos.length > 0}
+            onAtivarQueimada={handleAtivarQueimada}
+            onRestaurarAmbiente={handleRestaurarAmbiente}
+            onRecomecar={handleRecomecar}
+            onRemoverUltimo={handleRemoverUltimo}
+            onFinalizar={handleFinalizar}
+            fase={fase}
+          />
+        </aside>
+      </div>
+
+      {/* Modals */}
+      {showCollapseAlert && (
+        <CollapseAlert
+          collapseInfo={collapseInfo}
+          onClose={() => setShowCollapseAlert(false)}
+        />
+      )}
+
+      {selectedOrganism && (
+        <OrganismDetailModal
+          organismo={selectedOrganism}
+          allOrganismos={organismos}
+          onClose={() => setSelectedOrganism(null)}
+        />
+      )}
+    </div>
+  );
+}
