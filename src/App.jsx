@@ -206,6 +206,7 @@ export default function App() {
             proximosOrganismos={proximosOrganismos}
             criseAtiva={criseAtiva}
             onOrganismoClick={handleOrganismoClick}
+            onSelectOrganismo={handleSelectOrganismo}
           />
 
           {/* Cadeia construída */}
