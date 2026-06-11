@@ -1,7 +1,10 @@
 .organism-card {
-  background: var(--gradient-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--nivel-color), transparent 82%), transparent 36%),
+    linear-gradient(145deg, rgba(15, 43, 28, 0.8), rgba(3, 12, 8, 0.72)),
+    repeating-linear-gradient(0deg, rgba(255, 244, 194, 0.03) 0 1px, transparent 1px 8px);
+  border: 1px solid color-mix(in srgb, var(--nivel-color), #fff4c2 16%);
+  border-radius: 24px;
   padding: var(--spacing-lg);
   position: relative;
   overflow: hidden;
@@ -14,14 +17,16 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--nivel-color);
-  opacity: 0.6;
+  height: 100%;
+  width: 4px;
+  right: auto;
+  background: linear-gradient(180deg, var(--nivel-color), transparent);
+  opacity: 0.55;
 }
 
 .organism-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--nivel-color), white 8%);
+  box-shadow: var(--shadow-md), 0 0 24px color-mix(in srgb, var(--nivel-color), transparent 82%);
 }
 
 .organism-card.ameaçado {
@@ -82,6 +87,16 @@
 .organism-emoji-wrapper {
   position: relative;
   flex-shrink: 0;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px 24px 18px 24px;
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255, 255, 255, 0.2), transparent 30%),
+    rgba(255, 244, 194, 0.045);
+  border: 1px solid color-mix(in srgb, var(--nivel-color), transparent 44%);
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.03), 0 0 18px color-mix(in srgb, var(--nivel-color), transparent 76%);
 }
 
 .organism-emoji {
@@ -151,8 +166,9 @@
 
 /* === Energy Section === */
 .organism-energy {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 244, 194, 0.08);
+  border-radius: 18px;
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }
@@ -202,6 +218,50 @@
   margin-bottom: var(--spacing-sm);
 }
 
+.organism-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.organism-meta-chip {
+  padding: var(--spacing-sm);
+  border: 1px solid rgba(255, 244, 194, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 244, 194, 0.035);
+  min-width: 0;
+}
+
+.organism-meta-chip span {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.organism-meta-chip strong {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.organism-impact {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-left: 2px solid var(--impact-color);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--impact-color), transparent 90%);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+}
+
 /* === Curiosidade === */
 .organism-curiosidade {
   display: flex;
@@ -223,4 +283,10 @@
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .organism-meta-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,29 +1,23 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { getMensagemAleatoria, getMensagemPorContexto } from "../data/mensagens";
 import "./EducationalTip.css";
 
 export default function EducationalTip({ contexto, trigger }) {
-  const [mensagem, setMensagem] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [dismissedTrigger, setDismissedTrigger] = useState(null);
 
-  useEffect(() => {
+  const mensagem = useMemo(() => {
     let msg;
     if (contexto) {
-      msg = getMensagemPorContexto(contexto);
+      msg = getMensagemPorContexto(contexto, trigger);
     }
     if (!msg) {
-      msg = getMensagemAleatoria();
+      msg = getMensagemAleatoria(trigger);
     }
-    setMensagem(msg);
-    setVisible(true);
-
-    const timer = setTimeout(() => {
-      setVisible(false);
-    }, 8000);
-
-    return () => clearTimeout(timer);
+    return msg;
   }, [contexto, trigger]);
+
+  const visible = dismissedTrigger !== trigger;
 
   if (!mensagem) return null;
 
@@ -41,7 +35,7 @@ export default function EducationalTip({ contexto, trigger }) {
           <p className="tip-text">{mensagem.texto}</p>
           <button
             className="tip-close"
-            onClick={() => setVisible(false)}
+            onClick={() => setDismissedTrigger(trigger)}
           >
             ✕
           </button>

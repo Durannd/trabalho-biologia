@@ -1,25 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
 import "./BurnOverlay.css";
 
+const getPseudoRandom = (seed) => ((seed * 9301 + 49297) % 233280) / 233280;
+
+const EMBERS = Array.from({ length: 20 }, (_, i) => ({
+  id: i,
+  x: getPseudoRandom(i + 1) * 100,
+  delay: getPseudoRandom(i + 21) * 3,
+  duration: 3 + getPseudoRandom(i + 41) * 4,
+  size: 2 + getPseudoRandom(i + 61) * 4,
+}));
+
 export default function BurnOverlay({ active }) {
-  const [embers, setEmbers] = useState([]);
-
-  useEffect(() => {
-    if (active) {
-      const newEmbers = Array.from({ length: 20 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        delay: Math.random() * 3,
-        duration: 3 + Math.random() * 4,
-        size: 2 + Math.random() * 4,
-      }));
-      setEmbers(newEmbers);
-    } else {
-      setEmbers([]);
-    }
-  }, [active]);
-
   return (
     <AnimatePresence>
       {active && (
@@ -34,7 +26,7 @@ export default function BurnOverlay({ active }) {
           <div className="smoke-layer" />
 
           {/* Partículas de brasa */}
-          {embers.map((ember) => (
+          {EMBERS.map((ember) => (
             <div
               key={ember.id}
               className="ember"

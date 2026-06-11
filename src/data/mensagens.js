@@ -73,18 +73,20 @@ export const mensagensEducativas = [
   },
 ];
 
+function selecionarMensagem(lista, seed = 0) {
+  if (lista.length === 0) return null;
+  return lista[Math.abs(seed) % lista.length];
+}
+
 // Retorna uma mensagem relevante com base no contexto atual
-export function getMensagemPorContexto(contexto) {
+export function getMensagemPorContexto(contexto, seed = 0) {
   const mensagens = mensagensEducativas.filter(
     (m) => m.contexto === contexto
   );
-  if (mensagens.length === 0) return null;
-  return mensagens[Math.floor(Math.random() * mensagens.length)];
+  return selecionarMensagem(mensagens, seed);
 }
 
 // Retorna uma mensagem aleatória
-export function getMensagemAleatoria() {
-  return mensagensEducativas[
-    Math.floor(Math.random() * mensagensEducativas.length)
-  ];
+export function getMensagemAleatoria(seed = 0) {
+  return selecionarMensagem(mensagensEducativas, seed);
 }

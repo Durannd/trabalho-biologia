@@ -4,7 +4,28 @@
 
 .app {
   min-height: 100vh;
+  position: relative;
   transition: background var(--transition-slow);
+  background:
+    radial-gradient(circle at 48% -14%, rgba(74, 222, 128, 0.15), transparent 34rem),
+    radial-gradient(circle at 3% 30%, rgba(8, 145, 178, 0.12), transparent 30rem),
+    radial-gradient(circle at 92% 18%, rgba(245, 158, 11, 0.07), transparent 24rem),
+    linear-gradient(180deg, #06130d 0%, #03100a 100%);
+}
+
+.app::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle, rgba(255, 244, 194, 0.55) 0 1px, transparent 1px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 42px);
+  background-size: 120px 120px, 42px 42px, 42px 42px;
+  mix-blend-mode: screen;
 }
 
 .app.burn-active {
@@ -18,7 +39,9 @@
   justify-content: space-between;
   padding: var(--spacing-md) var(--spacing-xl);
   border-bottom: 1px solid var(--border-default);
-  background: rgba(6, 15, 9, 0.8);
+  background:
+    linear-gradient(90deg, rgba(4, 18, 12, 0.9), rgba(4, 18, 12, 0.68)),
+    repeating-linear-gradient(0deg, rgba(255, 244, 194, 0.04) 0 1px, transparent 1px 8px);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -35,6 +58,7 @@
   font-size: var(--font-size-lg);
   font-weight: 800;
   color: var(--text-primary);
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.18);
 }
 
 .header-subtitle {
@@ -78,11 +102,13 @@
 
 /* === Layout === */
 .app-layout {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: minmax(0, 1fr) 350px;
   gap: var(--spacing-xl);
   padding: var(--spacing-xl);
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
 }
 

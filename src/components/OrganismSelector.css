@@ -1,9 +1,13 @@
 .selector-container {
-  background: var(--gradient-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at top left, rgba(34, 197, 94, 0.1), transparent 32%),
+    linear-gradient(145deg, rgba(14, 48, 30, 0.72), rgba(3, 12, 8, 0.58)),
+    repeating-linear-gradient(0deg, rgba(255, 244, 194, 0.035) 0 1px, transparent 1px 9px);
+  border: 1px solid rgba(255, 244, 194, 0.13);
+  border-radius: 28px;
   padding: var(--spacing-xl);
   margin-bottom: var(--spacing-lg);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.2);
 }
 
 .selector-container.burn {
@@ -49,10 +53,12 @@
 }
 
 .selector-card {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  background:
+    radial-gradient(circle at top left, rgba(255, 244, 194, 0.08), transparent 40%),
+    linear-gradient(150deg, rgba(8, 30, 20, 0.72), rgba(1, 8, 5, 0.5));
+  border: 1px solid rgba(255, 244, 194, 0.11);
+  border-radius: 22px;
+  padding: var(--spacing-lg);
   cursor: pointer;
   text-align: left;
   color: var(--text-primary);
@@ -64,11 +70,23 @@
 }
 
 .selector-card:hover {
-  border-color: var(--accent-green);
-  box-shadow: var(--shadow-glow-green);
+  border-color: rgba(183, 247, 199, 0.45);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24), 0 0 26px rgba(52, 211, 153, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(52, 211, 153, 0.12), transparent 42%),
+    rgba(0, 0, 0, 0.24);
 }
 
 .selector-card-emoji {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 244, 194, 0.14);
+  border-radius: 18px 24px 18px 24px;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.14), transparent 32%),
+    rgba(255, 244, 194, 0.045);
   font-size: 2.5rem;
   line-height: 1;
   margin-bottom: var(--spacing-xs);
@@ -102,6 +120,27 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
+}
+
+.selector-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.selector-card-tags span {
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 244, 194, 0.06);
+  border: 1px solid rgba(255, 244, 194, 0.1);
+  color: var(--text-secondary);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .selector-card-action {

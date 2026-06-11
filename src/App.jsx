@@ -17,6 +17,7 @@ import BurnOverlay from "./components/BurnOverlay";
 import CollapseAlert from "./components/CollapseAlert";
 import EducationalTip from "./components/EducationalTip";
 import OrganismDetailModal from "./components/OrganismDetailModal";
+import AmazonScene from "./components/AmazonScene";
 
 import "./App.css";
 
@@ -26,7 +27,6 @@ export default function App() {
   const [cadeia, setCadeia] = useState([]); // organismos selecionados (raw)
   const [criseAtiva, setCriseAtiva] = useState(false);
   const [showCollapseAlert, setShowCollapseAlert] = useState(false);
-  const [collapseInfo, setCollapseInfo] = useState(null);
   const [selectedOrganism, setSelectedOrganism] = useState(null);
   const [tipTrigger, setTipTrigger] = useState(0);
   const [tipContexto, setTipContexto] = useState(null);
@@ -37,23 +37,17 @@ export default function App() {
     return calcularEnergiaCadeia(cadeia, ENERGIA_SOLAR, criseAtiva);
   }, [cadeia, criseAtiva]);
 
+  const collapseInfo = useMemo(() => {
+    if (cadeiaComEnergia.length < 2) return null;
+    return verificarColapsoCadeia(cadeiaComEnergia);
+  }, [cadeiaComEnergia]);
+
   // Próximos organismos possíveis
   const proximosOrganismos = useMemo(() => {
     if (cadeia.length === 0) return getProdutores();
     const ultimo = cadeia[cadeia.length - 1];
     return buscarPredadoresPossiveis(ultimo, organismos);
   }, [cadeia]);
-
-  // Verificar colapso quando energia muda
-  useEffect(() => {
-    if (cadeiaComEnergia.length >= 2) {
-      const resultado = verificarColapsoCadeia(cadeiaComEnergia);
-      setCollapseInfo(resultado);
-      if (resultado.colapso && criseAtiva) {
-        setShowCollapseAlert(true);
-      }
-    }
-  }, [cadeiaComEnergia, criseAtiva]);
 
   // Toggle burn mode no body
   useEffect(() => {
@@ -88,14 +82,12 @@ export default function App() {
   const handleRemoverUltimo = useCallback(() => {
     setCadeia((prev) => prev.slice(0, -1));
     setShowCollapseAlert(false);
-    setCollapseInfo(null);
   }, []);
 
   const handleRecomecar = useCallback(() => {
     setCadeia([]);
     setCriseAtiva(false);
     setShowCollapseAlert(false);
-    setCollapseInfo(null);
     setFase("montagem");
     setTipContexto(null);
   }, []);
@@ -107,16 +99,23 @@ export default function App() {
       calcularEnergiaCadeia(cadeia, ENERGIA_SOLAR, criseAtiva)
     );
     if (resultado.colapso) {
-      setCollapseInfo(resultado);
       setShowCollapseAlert(true);
+    } else {
+      setShowCollapseAlert(false);
     }
   }, [cadeia, criseAtiva]);
 
   const handleAtivarQueimada = useCallback(() => {
     setCriseAtiva(true);
+    const resultado = verificarColapsoCadeia(
+      calcularEnergiaCadeia(cadeia, ENERGIA_SOLAR, true)
+    );
+    if (resultado.colapso) {
+      setShowCollapseAlert(true);
+    }
     setTipContexto("queimada");
     setTipTrigger((t) => t + 1);
-  }, []);
+  }, [cadeia]);
 
   const handleRestaurarAmbiente = useCallback(() => {
     setCriseAtiva(false);
@@ -201,6 +200,13 @@ export default function App() {
         <main className="main-column">
           {/* Educational tip */}
           <EducationalTip contexto={tipContexto} trigger={tipTrigger} />
+
+          <AmazonScene
+            cadeia={cadeiaComEnergia}
+            proximosOrganismos={proximosOrganismos}
+            criseAtiva={criseAtiva}
+            onOrganismoClick={handleOrganismoClick}
+          />
 
           {/* Cadeia construída */}
           <FoodChainDisplay

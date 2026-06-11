@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowDown, ArrowUp } from "lucide-react";
+import { X, ArrowDown, ArrowUp, MapPin, Utensils, Leaf, ShieldAlert } from "lucide-react";
+import FoodWebGraph from "./FoodWebGraph";
 import "./OrganismDetailModal.css";
 
 export default function OrganismDetailModal({ organismo, allOrganismos, onClose }) {
@@ -38,14 +39,60 @@ export default function OrganismDetailModal({ organismo, allOrganismos, onClose 
 
           {/* Header */}
           <div className="detail-header">
-            <span className="detail-emoji">{organismo.emoji}</span>
+            <span
+              className="detail-emoji"
+              style={{ "--detail-color": organismo.corTema || "var(--accent-green)" }}
+            >
+              {organismo.emoji}
+            </span>
             <div>
               <h2 className="detail-name">{organismo.nome}</h2>
+              {organismo.nomeCientifico && (
+                <span className="detail-scientific">{organismo.nomeCientifico}</span>
+              )}
               <span className="detail-nivel">{organismo.nivelTroficoLabel}</span>
             </div>
           </div>
 
           <p className="detail-desc">{organismo.descricao}</p>
+
+          <div className="detail-fact-grid">
+            {organismo.habitat && (
+              <div className="detail-fact">
+                <MapPin size={16} />
+                <span>Habitat</span>
+                <strong>{organismo.habitat}</strong>
+              </div>
+            )}
+            {organismo.dietaResumo && (
+              <div className="detail-fact">
+                <Utensils size={16} />
+                <span>Dieta</span>
+                <strong>{organismo.dietaResumo}</strong>
+              </div>
+            )}
+            {organismo.papelEcologico && (
+              <div className="detail-fact">
+                <Leaf size={16} />
+                <span>Função ecológica</span>
+                <strong>{organismo.papelEcologico}</strong>
+              </div>
+            )}
+            {organismo.ameacas && (
+              <div className="detail-fact">
+                <ShieldAlert size={16} />
+                <span>Ameaças</span>
+                <strong>{organismo.ameacas}</strong>
+              </div>
+            )}
+          </div>
+
+          {organismo.adaptacoes && (
+            <div className="detail-adaptation">
+              <span>Adaptações</span>
+              <p>{organismo.adaptacoes}</p>
+            </div>
+          )}
 
           {organismo.curiosidade && (
             <div className="detail-curiosidade">
@@ -53,6 +100,13 @@ export default function OrganismDetailModal({ organismo, allOrganismos, onClose 
               <span>{organismo.curiosidade}</span>
             </div>
           )}
+
+          <div className="detail-section-title">Rede alimentar visual</div>
+          <FoodWebGraph
+            organismo={organismo}
+            presas={presas}
+            predadores={predadores}
+          />
 
           {/* Rede alimentar */}
           <div className="detail-network">

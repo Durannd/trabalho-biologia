@@ -6,7 +6,6 @@ import "./OrganismCard.css";
 export default function OrganismCard({
   organismo,
   index,
-  isInChain = false,
   onClick,
   compact = false,
   criseAtiva = false,
@@ -129,6 +128,30 @@ export default function OrganismCard({
       )}
 
       <p className="organism-descricao">{organismo.descricao}</p>
+
+      <div className="organism-meta-grid">
+        {organismo.habitat && (
+          <div className="organism-meta-chip">
+            <span>Habitat</span>
+            <strong>{organismo.habitat}</strong>
+          </div>
+        )}
+        {organismo.dietaResumo && (
+          <div className="organism-meta-chip">
+            <span>Dieta</span>
+            <strong>{organismo.dietaResumo}</strong>
+          </div>
+        )}
+      </div>
+
+      {organismo.fraseImpacto && (
+        <div
+          className="organism-impact"
+          style={{ "--impact-color": organismo.corTema || nivelColor }}
+        >
+          “{organismo.fraseImpacto}”
+        </div>
+      )}
 
       {organismo.curiosidade && (
         <div className="organism-curiosidade">

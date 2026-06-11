@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Sun, Zap } from "lucide-react";
 import OrganismCard from "./OrganismCard";
-import { formatarEnergia, ENERGIA_SOLAR, getEnergiaSolarEfetiva } from "../utils/simulacao";
+import { formatarEnergia, getEnergiaSolarEfetiva } from "../utils/simulacao";
 import "./FoodChainDisplay.css";
 
 export default function FoodChainDisplay({

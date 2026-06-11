@@ -4,7 +4,6 @@ import {
   TreePine,
   RotateCcw,
   Trash2,
-  Plus,
   Check,
 } from "lucide-react";
 import "./ControlPanel.css";
@@ -12,7 +11,6 @@ import "./ControlPanel.css";
 export default function ControlPanel({
   cadeia,
   criseAtiva,
-  temProximosOrganismos,
   onAtivarQueimada,
   onRestaurarAmbiente,
   onRecomecar,

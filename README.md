@@ -1,16 +1,38 @@
-# React + Vite
+# Simulador Amazônia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Experiência interativa em React para montar cadeias alimentares amazônicas e visualizar o fluxo de energia entre produtores, consumidores e predadores de topo.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Montagem guiada de cadeia alimentar a partir de produtores.
+- Cálculo de energia por nível trófico com regra de 2% para fotossíntese e 10% de transferência.
+- Evento ambiental de queimada, reduzindo a energia solar disponível.
+- Alerta de colapso quando a energia final não sustenta o organismo.
+- Cena 2D de floresta amazônica com organismos destacados.
+- Fichas narrativas dos organismos com habitat, dieta, papel ecológico, adaptações e ameaças.
+- Rede alimentar visual no modal de detalhes.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + Vite
+- Framer Motion para animações e transições
+- Lucide React para ícones
+- React Flow para a visualização da rede alimentar
 
-## Expanding the ESLint configuration
+## Evolução futura
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+A versão atual prioriza uma experiência 2D rica, usando HTML/CSS/React para manter o projeto simples de apresentar e fácil de manter.
+
+Possíveis caminhos para evoluir:
+
+- 3D/WebGL: `three`, `@react-three/fiber` e `@react-three/drei` para transformar a floresta em uma cena 3D.
+- 2D canvas avançado: `pixi.js` e `@pixi/react` para sprites, partículas e animações com mais performance.
+- Animações vetoriais: Rive ou dotLottie para organismos com movimentos mais elaborados.
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run lint
+```

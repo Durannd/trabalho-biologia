@@ -80,6 +80,10 @@ export default function OrganismSelector({
                 </span>
               </div>
               <div className="selector-card-desc">{org.descricao}</div>
+              <div className="selector-card-tags">
+                {org.habitat && <span>{org.habitat}</span>}
+                {org.papelEcologico && <span>{org.papelEcologico}</span>}
+              </div>
               <div className="selector-card-action">
                 <span>Selecionar</span>
                 <span className="arrow">→</span>

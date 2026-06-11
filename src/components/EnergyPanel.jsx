@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Sun, Zap, TrendingDown, AlertTriangle } from "lucide-react";
 import {
   formatarEnergia,
-  ENERGIA_SOLAR,
   getEnergiaSolarEfetiva,
   verificarSobrevivencia,
 } from "../utils/simulacao";
