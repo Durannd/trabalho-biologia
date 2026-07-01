@@ -24,8 +24,16 @@
 }
 
 .chain-title {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.chain-title svg {
+  color: var(--accent-green);
 }
 
 .chain-count {

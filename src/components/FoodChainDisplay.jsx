@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Sun, Zap } from "lucide-react";
+import { ArrowRight, Link2, Sun, Zap } from "lucide-react";
 import OrganismCard from "./OrganismCard";
 import { formatarEnergia, getEnergiaSolarEfetiva } from "../utils/simulacao";
 import "./FoodChainDisplay.css";
@@ -14,7 +14,10 @@ export default function FoodChainDisplay({
   return (
     <div className={`chain-display ${criseAtiva ? "burn" : ""}`}>
       <div className="chain-title-bar">
-        <h2 className="chain-title">🔗 Cadeia Alimentar Construída</h2>
+        <h2 className="chain-title">
+          <Link2 size={18} />
+          Cadeia alimentar construída
+        </h2>
         {cadeia.length > 0 && (
           <span className="chain-count">{cadeia.length + 1} níveis</span>
         )}

@@ -36,6 +36,7 @@ export default function EducationalTip({ contexto, trigger }) {
           <button
             className="tip-close"
             onClick={() => setDismissedTrigger(trigger)}
+            aria-label="Fechar dica"
           >
             ✕
           </button>

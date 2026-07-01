@@ -33,7 +33,7 @@ export default function OrganismDetailModal({ organismo, allOrganismos, onClose 
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <button className="detail-close" onClick={onClose}>
+          <button className="detail-close" onClick={onClose} aria-label="Fechar detalhes">
             <X size={18} />
           </button>
 

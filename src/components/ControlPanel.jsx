@@ -5,6 +5,7 @@ import {
   RotateCcw,
   Trash2,
   Check,
+  SlidersHorizontal,
 } from "lucide-react";
 import "./ControlPanel.css";
 
@@ -28,7 +29,10 @@ export default function ControlPanel({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <h3 className="control-title">🎮 Controles</h3>
+      <h3 className="control-title">
+        <SlidersHorizontal size={18} />
+        Controles
+      </h3>
 
       <div className="control-buttons">
         {/* Ações da cadeia */}
@@ -83,7 +87,7 @@ export default function ControlPanel({
               disabled={cadeia.length === 0}
             >
               <Flame size={16} />
-              <span>🔥 Ativar Queimada</span>
+              <span>Ativar queimada</span>
             </motion.button>
           ) : (
             <motion.button
@@ -95,7 +99,7 @@ export default function ControlPanel({
               animate={{ opacity: 1 }}
             >
               <TreePine size={16} />
-              <span>🌿 Restaurar Ambiente</span>
+              <span>Restaurar ambiente</span>
             </motion.button>
           )}
         </div>

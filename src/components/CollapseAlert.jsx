@@ -24,7 +24,7 @@ export default function CollapseAlert({ collapseInfo, onClose }) {
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <button className="collapse-close" onClick={onClose}>
+          <button className="collapse-close" onClick={onClose} aria-label="Fechar alerta">
             <X size={18} />
           </button>
 

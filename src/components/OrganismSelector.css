@@ -35,8 +35,9 @@
 }
 
 .selector-title {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1.42rem;
+  font-weight: 400;
   color: var(--text-primary);
 }
 
@@ -200,5 +201,10 @@
 
   .selector-container {
     padding: var(--spacing-md);
+  }
+
+  .selector-card-action {
+    opacity: 1;
+    transform: none;
   }
 }

@@ -17,9 +17,17 @@
 }
 
 .control-title {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
   margin-bottom: var(--spacing-lg);
+}
+
+.control-title svg {
+  color: var(--accent-green);
 }
 
 .control-buttons {

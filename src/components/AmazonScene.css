@@ -254,7 +254,9 @@
 }
 
 .scene-copy h2 {
-  font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
   line-height: 1.1;
   margin-bottom: var(--spacing-sm);
 }
@@ -418,7 +420,9 @@
 }
 
 .scene-choice-header h3 {
-  font-size: var(--font-size-base);
+  font-family: var(--font-display);
+  font-size: 1.14rem;
+  font-weight: 400;
   color: var(--text-primary);
   line-height: 1.2;
 }
@@ -449,6 +453,18 @@
   font-family: var(--font-family);
   text-align: left;
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.scene-choice-card:hover {
+  border-color: color-mix(in srgb, var(--organism-color), white 28%);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--organism-color), transparent 78%), transparent 48%),
+    rgba(7, 29, 19, 0.78);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
 .scene-choice-emoji {

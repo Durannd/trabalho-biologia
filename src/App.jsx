@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Activity, Leaf } from "lucide-react";
 import { organismos, getProdutores } from "./data/organismos";
 import {
   calcularEnergiaCadeia,
@@ -130,14 +131,14 @@ export default function App() {
   const getSelectorInfo = () => {
     if (cadeia.length === 0) {
       return {
-        titulo: "🌱 Escolha um Produtor",
+        titulo: "Escolha um produtor",
         subtitulo:
           "Toda cadeia alimentar começa com um organismo que realiza fotossíntese.",
       };
     }
     const ultimo = cadeia[cadeia.length - 1];
     return {
-      titulo: `🐾 Quem se alimenta de ${ultimo.nome}?`,
+      titulo: `Quem se alimenta de ${ultimo.nome}?`,
       subtitulo: `Escolha o próximo organismo da cadeia alimentar.`,
     };
   };
@@ -165,12 +166,24 @@ export default function App() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="header-left">
-          <h1 className="header-title">🌿 Simulador Amazônia</h1>
-          <span className="header-subtitle">
-            Fluxo de Energia & Entropia
+          <span className="header-brand-mark" aria-hidden="true">
+            <Leaf size={19} strokeWidth={1.8} />
           </span>
+          <div className="header-brand-copy">
+            <span className="header-eyebrow">Laboratório de ecologia</span>
+            <h1 className="header-title">Amazônia viva</h1>
+          </div>
         </div>
         <div className="header-right">
+          <div className="header-progress" aria-label={`${cadeia.length} organismos adicionados`}>
+            <Activity size={14} />
+            <span>{cadeia.length === 0 ? "Pronto para começar" : `${cadeia.length} organismos`}</span>
+            <div className="header-progress-dots" aria-hidden="true">
+              {[0, 1, 2, 3].map((step) => (
+                <span key={step} className={cadeia.length > step ? "active" : ""} />
+              ))}
+            </div>
+          </div>
           {criseAtiva && (
             <motion.span
               className="header-crisis-badge"
